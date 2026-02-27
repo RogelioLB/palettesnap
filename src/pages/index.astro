@@ -1,17 +1,79 @@
 ---
-
+import MainLayout from '../layouts/MainLayout.astro';
+import ImageUploader from '../components/ImageUploader.astro';
+import PaletteDisplay from '../components/PaletteDisplay.astro';
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
-</html>
+<MainLayout
+  title="PaletteSnap — Extractor de Paleta de Colores Gratis"
+  description="Extrae los colores dominantes de cualquier imagen al instante. Obtén HEX, RGB, HSL y nombre en español. Exporta como CSS o PNG. Gratis, sin registro."
+>
+  <!-- Banner Ad superior -->
+  <div class="bg-gray-100 rounded-xl h-20 flex items-center justify-center text-gray-400 text-xs mb-8 border border-dashed border-gray-200">
+    Espacio publicitario
+  </div>
+
+  <div class="space-y-8">
+    <!-- Hero -->
+    <div class="text-center space-y-2">
+      <h1 class="text-3xl font-bold text-gray-900 tracking-tight">
+        Extrae colores de cualquier imagen
+      </h1>
+      <p class="text-gray-500 text-base">
+        Sube, arrastra o pega tu imagen — obtén la paleta al instante
+      </p>
+    </div>
+
+    <!-- Uploader -->
+    <ImageUploader />
+
+    <!-- Slider de cantidad de colores -->
+    <div class="flex items-center gap-4 px-1">
+      <label for="colorCount" class="text-sm text-gray-600 whitespace-nowrap">
+        Número de colores:
+      </label>
+      <input
+        type="range"
+        id="colorCount"
+        min="3"
+        max="8"
+        value="5"
+        class="flex-1 accent-indigo-600 cursor-pointer"
+      />
+      <span id="colorCountValue" class="text-sm font-mono text-gray-700 w-4 text-center">5</span>
+    </div>
+
+    <!-- Paleta resultante -->
+    <PaletteDisplay />
+  </div>
+
+  <!-- Banner Ad inferior -->
+  <div class="bg-gray-100 rounded-xl h-20 flex items-center justify-center text-gray-400 text-xs mt-10 border border-dashed border-gray-200">
+    Espacio publicitario
+  </div>
+</MainLayout>
+
+<script>
+  import { extractColors } from '../lib/colorExtractor.js';
+  import { getColorName } from '../lib/colorNamer.js';
+
+  const slider = document.getElementById('colorCount');
+  const sliderValue = document.getElementById('colorCountValue');
+
+  slider.addEventListener('input', () => {
+    sliderValue.textContent = slider.value;
+  });
+
+  document.addEventListener('imageLoaded', (e) => {
+    const { imageData } = e.detail;
+    const k = parseInt(slider.value);
+
+    const rawColors = extractColors(imageData, k);
+    const colors = rawColors.map(c => ({
+      ...c,
+      name: getColorName(c.r, c.g, c.b),
+    }));
+
+    document.dispatchEvent(new CustomEvent('paletteReady', { detail: { colors } }));
+  });
+</script>
