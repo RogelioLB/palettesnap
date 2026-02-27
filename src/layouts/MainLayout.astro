@@ -1,0 +1,61 @@
+---
+export interface Props {
+  title: string;
+  description: string;
+  canonical?: string;
+}
+
+const { title, description, canonical = Astro.url.href } = Astro.props;
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "PaletteSnap",
+  "description": "Extrae paletas de colores dominantes de cualquier imagen de forma gratuita. Obtén HEX, RGB, HSL y nombre del color.",
+  "applicationCategory": "DesignApplication",
+  "operatingSystem": "Web Browser",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "url": "https://palettesnap.app"
+};
+---
+
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <title>{title}</title>
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content="/og-image.png" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+  </head>
+  <body class="bg-gray-50 text-gray-900 font-sans min-h-screen flex flex-col">
+    <header class="bg-white shadow-sm sticky top-0 z-10">
+      <div class="max-w-3xl mx-auto px-4 py-3 flex items-center justify-between">
+        <a href="/" class="font-bold text-xl text-indigo-600 tracking-tight">PaletteSnap</a>
+        <nav>
+          <a href="/blog/extractor-paleta-colores" class="text-gray-500 hover:text-indigo-600 text-sm transition-colors">
+            Blog
+          </a>
+        </nav>
+      </div>
+    </header>
+
+    <main class="max-w-3xl mx-auto w-full px-4 py-8 flex-1">
+      <slot />
+    </main>
+
+    <footer class="text-center text-gray-400 text-sm py-6 border-t border-gray-100">
+      © 2026 PaletteSnap — Herramienta gratuita de extracción de paletas de color
+    </footer>
+  </body>
+</html>
