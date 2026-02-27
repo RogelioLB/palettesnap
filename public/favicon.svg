@@ -1,6 +1,1 @@
-<svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <rect width="14" height="14" rx="4" fill="#FF6B6B"/>
-  <rect x="18" width="14" height="14" rx="4" fill="#FFB347"/>
-  <rect y="18" width="14" height="14" rx="4" fill="#4ECDC4"/>
-  <rect x="18" y="18" width="14" height="14" rx="4" fill="#6366F1"/>
-</svg>
+<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="none" viewBox="0 0 32 32"><rect width="14" height="14" fill="#FF6B6B" rx="4"/><rect width="14" height="14" x="18" fill="#FFB347" rx="4"/><rect width="14" height="14" y="18" fill="#4ECDC4" rx="4"/><rect width="14" height="14" x="18" y="18" fill="#6366F1" rx="4"/></svg>
