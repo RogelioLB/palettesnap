@@ -1,0 +1,106 @@
+---
+// Emite evento personalizado 'imageLoaded' en document con { imageData, previewSrc }
+---
+
+<div
+  id="uploader"
+  class="border-2 border-dashed border-gray-300 rounded-2xl p-12 text-center cursor-pointer hover:border-indigo-400 hover:bg-indigo-50 transition-all duration-200 select-none"
+  role="button"
+  tabindex="0"
+  aria-label="Zona de carga de imagen"
+>
+  <div class="flex flex-col items-center gap-3 pointer-events-none">
+    <svg xmlns="http://www.w3.org/2000/svg" class="w-12 h-12 text-gray-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+        d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+    </svg>
+    <div>
+      <p class="text-gray-600 font-medium text-base">Arrastra tu imagen aquí</p>
+      <p class="text-gray-400 text-sm mt-1">o haz click para seleccionar</p>
+    </div>
+    <p class="text-gray-300 text-xs">
+      También puedes pegar con
+      <kbd class="bg-gray-100 text-gray-500 px-1.5 py-0.5 rounded text-xs font-mono">Ctrl+V</kbd>
+    </p>
+    <p class="text-gray-300 text-xs">PNG, JPG, WEBP, GIF</p>
+  </div>
+  <input type="file" id="fileInput" accept="image/*" class="hidden" aria-hidden="true" />
+</div>
+
+<!-- Preview de la imagen cargada -->
+<div id="preview-container" class="hidden mt-4 rounded-xl overflow-hidden border border-gray-200">
+  <img id="preview-img" src="" alt="Imagen cargada" class="w-full max-h-64 object-contain bg-gray-100" />
+</div>
+
+<!-- Canvas oculto para procesar píxeles -->
+<canvas id="processing-canvas" class="hidden" aria-hidden="true"></canvas>
+
+<script>
+  const uploader = document.getElementById('uploader');
+  const fileInput = document.getElementById('fileInput');
+  const canvas = document.getElementById('processing-canvas');
+  const previewContainer = document.getElementById('preview-container');
+  const previewImg = document.getElementById('preview-img');
+
+  function processFile(file) {
+    if (!file || !file.type.startsWith('image/')) return;
+
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const src = e.target.result;
+      const img = new Image();
+      img.onload = () => {
+        const maxDim = 800;
+        let w = img.width, h = img.height;
+        if (w > maxDim || h > maxDim) {
+          const ratio = Math.min(maxDim / w, maxDim / h);
+          w = Math.round(w * ratio);
+          h = Math.round(h * ratio);
+        }
+
+        canvas.width = w;
+        canvas.height = h;
+        const ctx = canvas.getContext('2d');
+        ctx.drawImage(img, 0, 0, w, h);
+        const imageData = ctx.getImageData(0, 0, w, h);
+
+        previewImg.src = src;
+        previewContainer.classList.remove('hidden');
+
+        document.dispatchEvent(new CustomEvent('imageLoaded', {
+          detail: { imageData, previewSrc: src }
+        }));
+      };
+      img.src = src;
+    };
+    reader.readAsDataURL(file);
+  }
+
+  uploader.addEventListener('click', () => fileInput.click());
+  uploader.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' || e.key === ' ') fileInput.click();
+  });
+
+  fileInput.addEventListener('change', (e) => processFile(e.target.files[0]));
+
+  uploader.addEventListener('dragover', (e) => {
+    e.preventDefault();
+    uploader.classList.add('border-indigo-400', 'bg-indigo-50');
+  });
+  uploader.addEventListener('dragleave', (e) => {
+    if (!uploader.contains(e.relatedTarget)) {
+      uploader.classList.remove('border-indigo-400', 'bg-indigo-50');
+    }
+  });
+  uploader.addEventListener('drop', (e) => {
+    e.preventDefault();
+    uploader.classList.remove('border-indigo-400', 'bg-indigo-50');
+    processFile(e.dataTransfer.files[0]);
+  });
+
+  document.addEventListener('paste', (e) => {
+    const items = Array.from(e.clipboardData?.items || []);
+    const imageItem = items.find(item => item.type.startsWith('image/'));
+    if (imageItem) processFile(imageItem.getAsFile());
+  });
+</script>
