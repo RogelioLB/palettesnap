@@ -1,0 +1,111 @@
+---
+// Escucha evento 'paletteReady' en document con { colors }
+// Renderiza grid de tarjetas con HEX, RGB, HSL y nombre del color
+---
+
+<section id="palette-section" class="hidden space-y-5" aria-live="polite">
+  <div class="flex items-center justify-between flex-wrap gap-3">
+    <h2 class="text-lg font-semibold text-gray-800">Paleta extraída</h2>
+    <div class="flex gap-2">
+      <button
+        id="btn-css"
+        class="text-sm bg-white border border-gray-200 hover:border-indigo-400 hover:text-indigo-600 rounded-lg px-3 py-1.5 transition-colors"
+        title="Copiar como variables CSS"
+      >
+        Copiar CSS
+      </button>
+      <button
+        id="btn-png"
+        class="text-sm bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg px-3 py-1.5 transition-colors"
+        title="Descargar paleta como imagen PNG"
+      >
+        Exportar PNG
+      </button>
+    </div>
+  </div>
+
+  <div id="palette-grid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3">
+  </div>
+
+  <div
+    id="copy-toast"
+    class="hidden fixed bottom-6 left-1/2 -translate-x-1/2 bg-gray-900 text-white text-sm px-4 py-2 rounded-full shadow-lg"
+    role="alert"
+    aria-live="assertive"
+  >
+    ¡Copiado!
+  </div>
+</section>
+
+<template id="color-card-tpl">
+  <article class="bg-white rounded-xl shadow-sm overflow-hidden hover:shadow-md transition-shadow">
+    <div class="color-swatch h-24 w-full"></div>
+    <div class="p-3 space-y-0.5">
+      <p class="font-mono text-sm font-bold text-gray-900 color-hex"></p>
+      <p class="text-xs text-gray-500 color-rgb"></p>
+      <p class="text-xs text-gray-500 color-hsl"></p>
+      <p class="text-xs text-gray-400 italic color-name"></p>
+    </div>
+    <div class="px-3 pb-3">
+      <button class="copy-hex-btn w-full text-xs bg-gray-50 hover:bg-indigo-50 hover:text-indigo-700 border border-gray-100 rounded-lg py-1.5 transition-colors">
+        Copiar HEX
+      </button>
+    </div>
+  </article>
+</template>
+
+<script>
+  import { generateCssVariables, copyToClipboard, exportPaletteAsPng } from '../lib/exporters.js';
+
+  const paletteSection = document.getElementById('palette-section');
+  const paletteGrid = document.getElementById('palette-grid');
+  const template = document.getElementById('color-card-tpl');
+  const toast = document.getElementById('copy-toast');
+
+  let currentColors = [];
+  let toastTimeout = null;
+
+  function showToast(msg = '¡Copiado!') {
+    toast.textContent = msg;
+    toast.classList.remove('hidden');
+    clearTimeout(toastTimeout);
+    toastTimeout = setTimeout(() => toast.classList.add('hidden'), 2000);
+  }
+
+  function renderPalette(colors) {
+    paletteGrid.innerHTML = '';
+    paletteSection.classList.remove('hidden');
+
+    colors.forEach((color) => {
+      const card = template.content.cloneNode(true);
+
+      card.querySelector('.color-swatch').style.backgroundColor = color.hex;
+      card.querySelector('.color-hex').textContent = color.hex;
+      card.querySelector('.color-rgb').textContent = `rgb(${color.r}, ${color.g}, ${color.b})`;
+      card.querySelector('.color-hsl').textContent = `hsl(${color.hsl.h}, ${color.hsl.s}%, ${color.hsl.l}%)`;
+      card.querySelector('.color-name').textContent = color.name;
+
+      card.querySelector('.copy-hex-btn').addEventListener('click', async () => {
+        await copyToClipboard(color.hex);
+        showToast(`Copiado: ${color.hex}`);
+      });
+
+      paletteGrid.appendChild(card);
+    });
+  }
+
+  document.addEventListener('paletteReady', (e) => {
+    currentColors = e.detail.colors;
+    renderPalette(currentColors);
+  });
+
+  document.getElementById('btn-css').addEventListener('click', async () => {
+    const css = generateCssVariables(currentColors);
+    await copyToClipboard(css);
+    showToast('CSS copiado al portapapeles');
+  });
+
+  document.getElementById('btn-png').addEventListener('click', () => {
+    exportPaletteAsPng(currentColors);
+  });
+</script>
