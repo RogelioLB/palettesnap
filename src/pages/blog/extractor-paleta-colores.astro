@@ -1,0 +1,192 @@
+---
+import BlogLayout from '../../layouts/BlogLayout.astro';
+
+const faqLd = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "¿Qué es un extractor de paleta de colores?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Un extractor de paleta de colores es una herramienta que analiza una imagen y devuelve los colores dominantes en formatos como HEX, RGB o HSL. Se usa para diseño web, branding y marketing visual."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Cuántos colores debe tener una paleta de diseño?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Una paleta de diseño típicamente tiene entre 3 y 6 colores: un color primario, uno o dos secundarios, un acento y colores neutros. Para identidades de marca se recomienda 5 colores."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Cuál es la diferencia entre HEX, RGB y HSL?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "HEX (#ff0000) es el formato más común en web. RGB (255, 0, 0) describe los canales de rojo, verde y azul. HSL (0, 100%, 50%) describe tono, saturación y luminosidad, siendo más intuitivo para los humanos."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Puedo extraer colores de una captura de pantalla?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Sí. Con PaletteSnap puedes pegar directamente una captura de pantalla usando Ctrl+V sin necesidad de guardar el archivo primero. La herramienta procesará la imagen al instante."
+      }
+    }
+  ]
+};
+---
+
+<BlogLayout
+  title="Extractores de Paleta de Colores: Qué Son, Para Qué Sirven y Cuál Usar"
+  description="Guía completa sobre extractores de paleta de colores: usos, herramientas populares y cómo obtener la paleta perfecta de cualquier imagen gratis."
+  publishedDate="2026-02-26"
+>
+  <script type="application/ld+json" set:html={JSON.stringify(faqLd)} />
+
+  <article class="prose prose-gray max-w-none">
+    <h1>Extractores de Paleta de Colores: Guía Completa 2026</h1>
+
+    <p class="lead text-lg text-gray-600">
+      Un <strong>extractor de paleta de colores</strong> es una herramienta que analiza una imagen
+      y devuelve sus colores dominantes en formatos como HEX, RGB o HSL. Es usado por diseñadores,
+      marketers y desarrolladores para crear identidades visuales consistentes.
+    </p>
+
+    <h2>¿Para qué se usa un extractor de paleta de colores?</h2>
+
+    <p>
+      La consistencia visual es uno de los pilares del diseño profesional. Ya sea que estés
+      creando una identidad de marca, diseñando un sitio web o preparando publicaciones para
+      redes sociales, necesitas trabajar con colores precisos y reproducibles.
+    </p>
+
+    <ul>
+      <li><strong>Branding e identidad visual:</strong> Extrae los colores exactos del logo de una marca para usarlos en todos los materiales.</li>
+      <li><strong>Diseño web:</strong> Genera variables CSS directamente desde una imagen de referencia.</li>
+      <li><strong>Marketing en redes sociales:</strong> Mantén coherencia visual entre publicaciones usando la misma paleta.</li>
+      <li><strong>Análisis de competidores:</strong> Descubre qué colores usa tu competencia para diferenciarte.</li>
+      <li><strong>Fotografía y arte:</strong> Identifica la paleta de una fotografía para recrear su ambiente.</li>
+    </ul>
+
+    <h2>Herramientas más populares para extraer paletas de colores</h2>
+
+    <p>Existen varias herramientas en el mercado. Aquí una comparativa honesta:</p>
+
+    <div class="overflow-x-auto">
+      <table>
+        <thead>
+          <tr>
+            <th>Herramienta</th>
+            <th>Gratis</th>
+            <th>Sin registro</th>
+            <th>Formatos</th>
+            <th>Exportar PNG</th>
+            <th>Exportar CSS</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>PaletteSnap</strong></td>
+            <td>✅</td>
+            <td>✅</td>
+            <td>HEX, RGB, HSL + nombre</td>
+            <td>✅</td>
+            <td>✅</td>
+          </tr>
+          <tr>
+            <td>Coolors</td>
+            <td>Parcial</td>
+            <td>✅</td>
+            <td>HEX, RGB</td>
+            <td>✅ (Pro)</td>
+            <td>✅ (Pro)</td>
+          </tr>
+          <tr>
+            <td>Adobe Color</td>
+            <td>✅</td>
+            <td>❌ (requiere cuenta)</td>
+            <td>HEX, RGB, CMYK</td>
+            <td>✅</td>
+            <td>❌</td>
+          </tr>
+          <tr>
+            <td>ImageColorPicker</td>
+            <td>✅</td>
+            <td>✅</td>
+            <td>HEX, RGB</td>
+            <td>❌</td>
+            <td>❌</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h2>¿Por qué usar PaletteSnap?</h2>
+
+    <p>
+      PaletteSnap fue diseñado con un principio en mente: hacer una sola cosa, pero hacerla bien.
+      A diferencia de otras herramientas que requieren registro o limitan sus funciones a usuarios
+      de pago, PaletteSnap es completamente gratuito y funciona directamente en tu navegador.
+    </p>
+
+    <ul>
+      <li><strong>Pega con Ctrl+V:</strong> No necesitas guardar la imagen. Toma una captura de pantalla y pégala directamente.</li>
+      <li><strong>Nombres en español:</strong> Cada color viene con su nombre en español, no solo el código técnico.</li>
+      <li><strong>Cantidad configurable:</strong> Elige entre 3 y 8 colores según tus necesidades.</li>
+      <li><strong>Exporta como CSS:</strong> Copia las variables CSS listas para pegar en tu proyecto.</li>
+      <li><strong>100% privado:</strong> Tu imagen nunca sale de tu navegador. Todo el procesamiento es local.</li>
+    </ul>
+
+    <h2>Cómo obtener la paleta perfecta de una imagen</h2>
+
+    <ol>
+      <li>Sube tu imagen (arrastra, click, o Ctrl+V)</li>
+      <li>Ajusta el número de colores con el slider (recomendamos 5 para branding)</li>
+      <li>Copia el HEX de cada color individualmente, o exporta todo como CSS variables</li>
+      <li>Descarga la paleta como imagen PNG para documentación o presentaciones</li>
+    </ol>
+
+    <div class="not-prose bg-indigo-50 border border-indigo-100 rounded-xl p-5 my-6">
+      <p class="text-indigo-800 font-medium m-0">
+        ¿Listo para extraer tu paleta?
+        <a href="/" class="underline hover:no-underline">Prueba PaletteSnap ahora →</a>
+      </p>
+    </div>
+
+    <h2>Preguntas frecuentes</h2>
+
+    <h3>¿Qué es un extractor de paleta de colores?</h3>
+    <p>
+      Un extractor de paleta de colores es una herramienta que analiza una imagen y devuelve
+      los colores dominantes en formatos como HEX, RGB o HSL. Se usa para diseño web, branding
+      y marketing visual.
+    </p>
+
+    <h3>¿Cuántos colores debe tener una paleta de diseño?</h3>
+    <p>
+      Una paleta de diseño típicamente tiene entre 3 y 6 colores: un color primario, uno o dos
+      secundarios, un acento y colores neutros. Para identidades de marca se recomienda comenzar
+      con 5 colores.
+    </p>
+
+    <h3>¿Cuál es la diferencia entre HEX, RGB y HSL?</h3>
+    <p>
+      <strong>HEX</strong> (#ff0000) es el formato más común en desarrollo web.
+      <strong>RGB</strong> (255, 0, 0) describe los canales de rojo, verde y azul.
+      <strong>HSL</strong> (0, 100%, 50%) describe tono, saturación y luminosidad,
+      siendo más intuitivo para ajustes manuales.
+    </p>
+
+    <h3>¿Puedo extraer colores de una captura de pantalla?</h3>
+    <p>
+      Sí. Con PaletteSnap puedes pegar directamente una captura de pantalla usando
+      <kbd>Ctrl+V</kbd> sin necesidad de guardar el archivo primero. La herramienta
+      procesará la imagen al instante.
+    </p>
+  </article>
+</BlogLayout>
